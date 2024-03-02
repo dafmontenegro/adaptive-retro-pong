@@ -3,7 +3,7 @@ El proyecto consiste en una nueva version del juego retro PONG lanzado por Atari
 
 **DEMO:** https://dafmontenegro.com/adaptive-retro-pong/
 
-# Proyecto Juego Retro - Computacion Visual UN 2024-1
+# Proyecto Juego Arcade - Computacion Visual UN 2024-1
 - Daniel Felipe Montenegro
 - Camilo Andres Fierro
 - Anderson Barrera
