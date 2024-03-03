@@ -1,7 +1,8 @@
-let ball, player1, player2, info, pause, infoMessage, font;
+let ball, player1, player2, info, pause, infoMessage, font, audio, song;
 
 function preload() {
   font = loadFont("assets/PublicPixel-z84yD.ttf");
+  song = loadSound("assets/pongsound.mp3");
 }
 
 // Initialize the canvas and set up for the game
@@ -10,13 +11,14 @@ function setup() {
   createCanvas(windowWidth, windowHeight); // Set canvas size to match with user's window
 
   info = true;
-  pause = false;
-  infoMessage = "i: show info\n1: auto player 1\n2: auto player 2"
+  pause = true;
+  audio = true;
+  infoMessage = "i: show info\n1: auto player 1\n2: auto player 2\na: audio"
 
   let ballSize = windowHeight * 0.02;
   let ballSpeed = 3; // seconds
 
-  player1 = new Player(ballSize * 1.5, ballSize, true);
+  player1 = new Player(ballSize * 1.5, ballSize);
   player2 = new Player(windowWidth - ballSize * 2, ballSize, true);
   ball = new Ball(ballSize, ballSpeed);
 
@@ -59,6 +61,8 @@ function keyPressed() {
     player1.auto = !player1.auto;
   } else if (key === "2") {
     player2.auto = !player2.auto;
+  } else if (key === "a") {
+    audio = !audio;
   }
 }
 
@@ -131,6 +135,9 @@ class Ball {
       // player2.height = min(ball.size*10, player1.height+ball.size);
       // player2.accuracy = min(0.5, player2.accuracy - 0.05);
       player1.score++;
+      if (audio) {
+        song.play();
+      }
     }
     //Check if the player 2 scores
     if (this.x < 0) {
@@ -140,6 +147,9 @@ class Ball {
       // player2.height = max(ball.size*4, player1.height-ball.size);
       // player2.accuracy = max(0.1, player2.accuracy + 0.05);
       player2.score++;
+      if (audio) {
+        song.play();
+      }
     }
   }
 
