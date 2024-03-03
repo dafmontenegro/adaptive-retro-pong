@@ -80,8 +80,8 @@ function setBackground() {
   showMessage(player1.score, windowWidth * 0.25, windowHeight * 0.1, windowHeight * 0.05);
   showMessage(player2.score, windowWidth * 0.75, windowHeight * 0.1, windowHeight * 0.05);
   if (info) {
-    showMessage("player1Auto: " + (player1.accuracy - 0.01).toFixed(2), windowWidth * 0.25, windowHeight * 0.05, windowHeight * 0.025);
-    showMessage("player2Auto: " + (player2.accuracy - 0.01).toFixed(2), windowWidth * 0.75, windowHeight * 0.05, windowHeight * 0.025);
+    showMessage("player1Auto: " + player1.getAccuracy(), windowWidth * 0.25, windowHeight * 0.05, windowHeight * 0.025);
+    showMessage("player2Auto: " + player2.getAccuracy(), windowWidth * 0.75, windowHeight * 0.05, windowHeight * 0.025);
     showMessage("Speed: " + ball.getSpeedSecs().toFixed(1) + " seconds", windowWidth * 0.25, windowHeight * 0.95, windowHeight * 0.025);
     showMessage("barHeight: " + (player1.height / windowHeight).toFixed(2) + " %", windowWidth * 0.75, windowHeight * 0.95, windowHeight * 0.025);
   }
@@ -183,10 +183,17 @@ class Player {
     this.score = 0;
   }
 
+  getAccuracy() {
+    if (this.auto) {
+      return (this.accuracy - 0.01).toFixed(2);
+    }
+    return "deactivated";
+  }
+
   update() {
     if (this.auto) {
       if (((this.n == 1) && (ball.dirX == -1)) || ((this.n == 2) && (ball.dirX == 1))) {
-        this.y += (ball.y - this.y) * random(0, this.accuracy);
+        this.y += (ball.y - this.y) * random(0.05, this.accuracy);
       }
     } else {
       this.y = mouseY;
