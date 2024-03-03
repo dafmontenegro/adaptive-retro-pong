@@ -16,10 +16,10 @@ function setup() {
   infoMessage = "i: show info\n1: auto player 1\n2: auto player 2\na: audio"
 
   let ballSize = windowHeight * 0.02;
-  let ballSpeed = 3; // seconds
+  let ballSpeed = 3.2; // seconds
 
   player1 = new Player(ballSize * 1.5, ballSize);
-  player2 = new Player(windowWidth - ballSize * 2, ballSize, true);
+  player2 = new Player(windowWidth - ballSize * 1.5, ballSize, true);
   ball = new Ball(ballSize, ballSpeed);
 
   strokeWeight(windowHeight * 0.002);
@@ -39,12 +39,17 @@ function draw() {
     if (!pause) {
       player1.update();
       player2.update();
-      ball.update();
+      ball.update(player1, player2);
     } else {
       background(0, 210);
+      showMessage(infoMessage, windowWidth / 2, windowHeight * 0.25, windowHeight * 0.025);
       showMessage("PAUSE", windowWidth / 2, windowHeight / 2, windowHeight * 0.15);
       showMessage("Press ENTER to continue...", windowWidth / 2, windowHeight * 0.75, windowHeight * 0.025);
-      showMessage(infoMessage, windowWidth / 2, windowHeight * 0.25, windowHeight * 0.025);
+      if (audio) {
+        showMessage("Audio: ON", windowWidth / 2, windowHeight * 0.875, windowHeight * 0.025);
+      } else {
+        showMessage("Audio: OFF", windowWidth / 2, windowHeight * 0.875, windowHeight * 0.025);
+      }
     }
   } else {
     background(0);
@@ -75,8 +80,10 @@ function setBackground() {
   showMessage(player1.score, windowWidth * 0.25, windowHeight * 0.1, windowHeight * 0.05);
   showMessage(player2.score, windowWidth * 0.75, windowHeight * 0.1, windowHeight * 0.05);
   if (info) {
-    showMessage("Speed: " + ball.getSpeedSecs() + " seconds", windowWidth * 0.25, windowHeight * 0.95, windowHeight * 0.025);
-    showMessage("Accuracy: " + player2.accuracy.toFixed(1), windowWidth * 0.75, windowHeight * 0.95, windowHeight * 0.025);
+    showMessage("player1Auto: " + (player1.accuracy - 0.01).toFixed(2), windowWidth * 0.25, windowHeight * 0.05, windowHeight * 0.025);
+    showMessage("player2Auto: " + (player2.accuracy - 0.01).toFixed(2), windowWidth * 0.75, windowHeight * 0.05, windowHeight * 0.025);
+    showMessage("Speed: " + ball.getSpeedSecs().toFixed(1) + " seconds", windowWidth * 0.25, windowHeight * 0.95, windowHeight * 0.025);
+    showMessage("barHeight: " + (player1.height / windowHeight).toFixed(2) + " %", windowWidth * 0.75, windowHeight * 0.95, windowHeight * 0.025);
   }
 }
 
@@ -106,10 +113,10 @@ class Ball {
   }
 
   getSpeedSecs() {
-    return (windowWidth / (getTargetFrameRate() * this.speed)).toFixed(1);
+    return (windowWidth / (getTargetFrameRate() * this.speed));
   }
 
-  update() {
+  update(player1, player2) {
     this.x = this.x + (this.speed * this.dirX);
     this.y = this.y + (this.speed * this.dirY);
     if ((this.y <= 0 + this.size / 2) || (this.y >= windowHeight - this.size / 2)) {
@@ -127,29 +134,32 @@ class Ball {
         this.x = this.x + (this.speed * this.dirX);
       }
     }
-    //Check if the player 1 scores
+    // Check if the player 1 scores
     if (this.x > windowWidth) {
-      this.startPosition();
-      // ball.setSpeed(max(1, ball.getSpeedSecs()-0.1));
-      // player1.height = max(ball.size*4, player1.height-ball.size);
-      // player2.height = min(ball.size*10, player1.height+ball.size);
-      // player2.accuracy = min(0.5, player2.accuracy - 0.05);
-      player1.score++;
-      if (audio) {
-        song.play();
-      }
+      this.applyScore(player2, player1);
     }
-    //Check if the player 2 scores
+    // Check if the player 2 scores
     if (this.x < 0) {
-      this.startPosition();
-      // ball.setSpeed(min(4, ball.getSpeedSecs()+0.1));
-      // player1.height = min(ball.size*10, player1.height+ball.size);
-      // player2.height = max(ball.size*4, player1.height-ball.size);
-      // player2.accuracy = max(0.1, player2.accuracy + 0.05);
-      player2.score++;
-      if (audio) {
-        song.play();
-      }
+      this.applyScore(player1, player2);
+    }
+  }
+
+  applyScore(playerA, playerB, minSpeed = 1, maxSpeed = 4, shiftSpeed = 0.1, minAccuracy = 0.1, maxAcurracy = 1, shiftAccuracy = 0.1, minHeight = ball.size * 4, maxHeight = ball.size * 15) {
+    this.startPosition();
+    if (playerA.auto) {
+      ball.setSpeed(max(minSpeed, ball.getSpeedSecs() - shiftSpeed));
+      playerA.accuracy = min(maxAcurracy, playerA.accuracy + shiftAccuracy);
+      playerA.height = max(minHeight, playerA.height - ball.size);
+      playerB.height = max(minHeight, playerB.height - ball.size);
+    } else {
+      ball.setSpeed(min(maxSpeed, ball.getSpeedSecs() + shiftSpeed));
+      playerB.accuracy = max(minAccuracy, playerB.accuracy - shiftAccuracy);
+      playerA.height = max(minHeight, playerA.height + ball.size);
+      playerB.height = max(minHeight, playerB.height + ball.size);
+    }
+    playerB.score++;
+    if (audio) {
+      song.play();
     }
   }
 
@@ -162,9 +172,9 @@ class Ball {
 //This function allows the movement and behavior of the paddles (Also known as the player)
 class Player {
 
-  constructor(x, width, auto = false, accuracy = 0.3) {
+  constructor(x, width, auto = false, accuracy = 0.22, scale = 9) {
     this.width = width;
-    this.height = this.width * 8;
+    this.height = this.width * scale;
     this.x = x;
     this.y = windowHeight / 2;
     this.accuracy = accuracy;
@@ -187,7 +197,12 @@ class Player {
   }
 
   show() {
-    rect(this.x, this.y - this.height / 2, this.width, this.height);
+    rect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
+    if (!this.auto) {
+      fill(0);
+      circle(this.x, this.y, this.width * 0.75);
+      fill(255);
+    }
   }
 
 }
