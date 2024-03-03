@@ -106,7 +106,7 @@ class Ball {
   }
 
   getSpeedSecs() {
-    return windowWidth / (getTargetFrameRate() * this.speed);
+    return (windowWidth / (getTargetFrameRate() * this.speed)).toFixed(1);
   }
 
   update() {
