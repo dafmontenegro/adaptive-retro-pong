@@ -16,7 +16,7 @@ function setup() {
   infoMessage = "i: show info\n1: auto player 1\n2: auto player 2\na: audio"
 
   let ballSize = windowHeight * 0.02;
-  let ballSpeed = 3.2; // seconds
+  let ballSpeed = 3; // seconds
 
   player1 = new Player(1, ballSize * 1.5, ballSize);
   player2 = new Player(2, windowWidth - ballSize * 1.5, ballSize, true);
@@ -144,7 +144,7 @@ class Ball {
     }
   }
 
-  applyScore(playerA, playerB, minSpeed = 1, maxSpeed = 4, shiftSpeed = 0.1, minAccuracy = 0.1, maxAcurracy = 1, shiftAccuracy = 0.1, minHeight = ball.size * 3) {
+  applyScore(playerA, playerB, minSpeed = 1, maxSpeed = 4, shiftSpeed = 0.1, minAccuracy = 0.1, maxAcurracy = 1, shiftAccuracy = 0.1, minHeight = ball.size * 5, maxHeight = ball.size * 15) {
     this.startPosition();
     if (playerA.auto) {
       ball.setSpeed(max(minSpeed, ball.getSpeedSecs() - shiftSpeed));
@@ -154,8 +154,8 @@ class Ball {
     } else {
       ball.setSpeed(min(maxSpeed, ball.getSpeedSecs() + shiftSpeed));
       playerB.accuracy = max(minAccuracy, playerB.accuracy - shiftAccuracy);
-      playerA.height = max(minHeight, playerA.height + ball.size);
-      playerB.height = max(minHeight, playerB.height + ball.size);
+      playerA.height = min(maxHeight, playerA.height + ball.size);
+      playerB.height = min(maxHeight, playerB.height + ball.size);
     }
     playerB.score++;
     if (audio) {
@@ -172,7 +172,7 @@ class Ball {
 //This function allows the movement and behavior of the paddles (Also known as the player)
 class Player {
 
-  constructor(n, x, width, auto = false, accuracy = 0.22, scale = 9) {
+  constructor(n, x, width, auto = false, accuracy = 0.2, scale = 9) {
     this.n = n;
     this.width = width;
     this.height = this.width * scale;
@@ -185,7 +185,7 @@ class Player {
 
   getAccuracy() {
     if (this.auto) {
-      return "0.09 - " + (this.accuracy - 0.01).toFixed(2);
+      return (this.accuracy / 10).toFixed(2) + " - " + this.accuracy.toFixed(2);
     }
     return "deactivated";
   }
@@ -193,7 +193,7 @@ class Player {
   update() {
     if (this.auto) {
       if (((this.n == 1) && (ball.dirX == -1)) || ((this.n == 2) && (ball.dirX == 1))) {
-        this.y += (ball.y - this.y) * random(0.09, this.accuracy);
+        this.y += (ball.y - this.y) * random(this.accuracy / 10, this.accuracy);
       }
     } else {
       this.y = mouseY;
