@@ -76,7 +76,7 @@ function setBackground() {
   showMessage(player2.score, windowWidth * 0.75, windowHeight * 0.1, windowHeight * 0.05);
   if (info) {
     showMessage("Speed: " + ball.getSpeedSecs() + " seconds", windowWidth * 0.25, windowHeight * 0.95, windowHeight * 0.025);
-    showMessage("Accuracy: " + player2.accuracy, windowWidth * 0.75, windowHeight * 0.95, windowHeight * 0.025);
+    showMessage("Accuracy: " + player2.accuracy.toFixed(1), windowWidth * 0.75, windowHeight * 0.95, windowHeight * 0.025);
   }
 }
 
