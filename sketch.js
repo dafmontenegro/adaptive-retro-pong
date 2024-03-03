@@ -18,8 +18,8 @@ function setup() {
   let ballSize = windowHeight * 0.02;
   let ballSpeed = 3.2; // seconds
 
-  player1 = new Player(ballSize * 1.5, ballSize);
-  player2 = new Player(windowWidth - ballSize * 1.5, ballSize, true);
+  player1 = new Player(1, ballSize * 1.5, ballSize);
+  player2 = new Player(2, windowWidth - ballSize * 1.5, ballSize, true);
   ball = new Ball(ballSize, ballSpeed);
 
   strokeWeight(windowHeight * 0.002);
@@ -172,7 +172,8 @@ class Ball {
 //This function allows the movement and behavior of the paddles (Also known as the player)
 class Player {
 
-  constructor(x, width, auto = false, accuracy = 0.22, scale = 9) {
+  constructor(n, x, width, auto = false, accuracy = 0.22, scale = 9) {
+    this.n = n;
     this.width = width;
     this.height = this.width * scale;
     this.x = x;
@@ -184,7 +185,9 @@ class Player {
 
   update() {
     if (this.auto) {
-      this.y += (ball.y - this.y) * random(0, this.accuracy);
+      if (((this.n == 1) && (ball.dirX == -1)) || ((this.n == 2) && (ball.dirX == 1))) {
+        this.y += (ball.y - this.y) * random(0, this.accuracy);
+      }
     } else {
       this.y = mouseY;
     }
