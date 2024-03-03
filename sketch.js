@@ -144,7 +144,7 @@ class Ball {
     }
   }
 
-  applyScore(playerA, playerB, minSpeed = 1, maxSpeed = 4, shiftSpeed = 0.1, minAccuracy = 0.1, maxAcurracy = 1, shiftAccuracy = 0.1, minHeight = ball.size * 4, maxHeight = ball.size * 15) {
+  applyScore(playerA, playerB, minSpeed = 1, maxSpeed = 4, shiftSpeed = 0.1, minAccuracy = 0.1, maxAcurracy = 1, shiftAccuracy = 0.1, minHeight = ball.size * 3) {
     this.startPosition();
     if (playerA.auto) {
       ball.setSpeed(max(minSpeed, ball.getSpeedSecs() - shiftSpeed));
@@ -185,7 +185,7 @@ class Player {
 
   getAccuracy() {
     if (this.auto) {
-      return (this.accuracy - 0.01).toFixed(2);
+      return "0.09 - " + (this.accuracy - 0.01).toFixed(2);
     }
     return "deactivated";
   }
@@ -193,7 +193,7 @@ class Player {
   update() {
     if (this.auto) {
       if (((this.n == 1) && (ball.dirX == -1)) || ((this.n == 2) && (ball.dirX == 1))) {
-        this.y += (ball.y - this.y) * random(0.05, this.accuracy);
+        this.y += (ball.y - this.y) * random(0.09, this.accuracy);
       }
     } else {
       this.y = mouseY;
