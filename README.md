@@ -21,7 +21,7 @@ Al iniciar el juego apareceras en el menú de pausa y tendrás las siguientes op
 ¿__? -> Ponle por favor negrilla a todas las demas opciones tal y como esta ENTER
 
 - **Teclas:**
-  - **ENTER:** Pausar/¿__? el juego.
+  - **ENTER:** Pausar/Reanudar el juego.
   - i: Activa/Desactiva la informacion del juego (`player1Auto`, `player2Auto`, `Speed`, `barHeight`)
   - 1 (Barra Izquierda): Activa/Desactiva el modo automático, cuando no está en automático pasa a manual, lo cual implica moverlo con el mouse
   - 2 (Barra derecha): Activa/Desactiva el modo automático, cuando no está en automático pasa a manual, lo cual implica moverlo con el mouse
