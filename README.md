@@ -4,7 +4,6 @@ El proyecto consiste en una nueva versión del clásico juego PONG lanzado por A
 
 ## Proyecto Juego Retro - Computación Visual UN 2024-1
 - Daniel Felipe Montenegro
-- Camilo Andres Fierro
 - Anderson Barrera
 
 ## ¿Cómo Jugar?
