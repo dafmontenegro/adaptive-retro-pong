@@ -1,6 +1,6 @@
 # adaptive-retro-pong
 
-El proyecto consiste en una nueva versión del clásico juego PONG lanzado por Atari en 1972. Esta reinterpretación del juego hace uso de p5.js (una biblioteca de JavaScript para la programación creativa, que busca hacer que programar sea accesible [1]), y tiene como propuesta la implementación de una dificultad adaptativa que busca suponer siempre un desafio para el jugador, esto se logra ajustando la velocidad del juego, ancho de las barras y precision del modo automático, todo de acuerdo al rendimiento del jugador durante la partida.
+El proyecto consiste en una nueva versión del clásico juego PONG lanzado por Atari en 1972. Esta reinterpretación del juego hace uso de p5.js (una biblioteca de JavaScript para la programación creativa[1]), y tiene como propuesta la implementación de una dificultad adaptativa que busca suponer siempre un desafio para el jugador, esto se logra ajustando la velocidad del juego, ancho de las barras y precision del modo automático, todo de acuerdo al rendimiento del jugador durante la partida.
 
 ## Proyecto Juego Retro - Computación Visual UN 2024-1
 - Daniel Felipe Montenegro
@@ -17,37 +17,38 @@ El proyecto consiste en una nueva versión del clásico juego PONG lanzado por A
 Al iniciar el juego apareceras en el menú de pausa y tendrás las siguientes opciones para configurar tu partida:
 
 - **Mouse:**
-  - Movimiento del cursor: Controla la o las barras que estén en modo manual de forma vertical
-  (El modo manual se indica cuando playerAuto: Deactivated, sea el player1Auto o el player2Auto)
+  - **Movimiento del cursor:** Controla la o las barras de forma vertical que estén en modo manual (el modo manual se indica con un punto en el centro de la barra y con la informacion en pantalla `player#Auto: deactivated`)
+
+¿__? -> Ponle por favor negrilla a todas las demas opciones tal y como esta ENTER
 
 - **Teclas:**
-  - ENTER: Pausar/¿_? el juego.
-  - - i: Activa/Desactiva la informacion del juego(player1Auto, player2Auto, Speed, barHeight)
+  - **ENTER:** Pausar/¿__? el juego.
+  - i: Activa/Desactiva la informacion del juego (`player1Auto`, `player2Auto`, `Speed`, `barHeight`)
   - 1 (Barra Izquierda): Activa/Desactiva el modo automático, cuando no está en automático pasa a manual, lo cual implica moverlo con el mouse
   - 2 (Barra derecha): Activa/Desactiva el modo automático, cuando no está en automático pasa a manual, lo cual implica moverlo con el mouse
   - a: Activa/Desactiva el audio del juego.
 
-**Nota:** La aplicacion esta creada para funcionar en formato HTML, CSS y Javascript, para ser ejecutada en un navegador web de manera responsiva y requiere de un teclado (o un ingreso de caracteres), para que el juego pueda ser configurado y funcione de manera correcta.
+¿__? -> La respuesta que pusiste es incorrecta (pista: solo es una palabra), revisa esto: https://www.fotor.com/blog/portrait-vs-landscape/ y prueba abrir el juego en el celular en formato portrait... ¿Que te parece?
+> **Nota:** La aplicacion esta creada para funcionar en formato ¿_? de manera responsiva y requiere de un teclado (o un ingreso de caracteres), para que el juego pueda ser configurado y funcione de manera correcta.
 
+¿__? -> Me parece interesante el nombre de esta seccion, mi sugerencia es dividirlo en dos, la interfaz por defecto y por decirlo asi la extendida (interfaz + informacion) que es la completa... la que aparece con i
 ## Interfaz
 
-- **player1Auto o player2Auto**: Indica la configuración de los jugadores. Puede tomar dos valores:
-    - `deactivated`: Implica que el jugador se controla con el mouse.
-    - Cuando el jugador es automático, aparecen 2 valores y el jugador se mueve automáticamente para tratar de interceptar la pelota. La precisión del movimiento automático se controla en la función `update()` de la clase Player, donde se usa la propiedad `accuracy` para determinar qué tan preciso será el movimiento del jugador automático.
-    
-    El rango "0.03 - 0.30" significa que la precisión del jugador 2 puede variar dentro de este rango. En otras palabras:
-    - Cuando el valor es más cercano a 0.03, el movimiento automático del jugador 2 será menos preciso.
-    - Cuando el valor es más cercano a 0.30, el movimiento automático del jugador 2 será más preciso.
+- **player#Auto**: Indica el modo actual de juego para el player#, el cual puede ser automatico o manual y se explican a continuacion:
+    - **`0.0# - #.##` (modo automatico):** Define el rango de precision con el que se movera automaticamente el jugador  en cada fotograma para interceptar la pelota con respecto al centro de la barra.<br>**Ejemplo:** Hipoteticamente el jugador tiene que moverse 100 pixeles para alinear el centro de la barra con el centro de la pelota durante un fotograma. Si el rango definido es 0.03 - 0.30, entonces se generara un numero aleatorio entre estos dos valores y lo que sucedera es que para ese fotograma la barra se movera entre 3 y 30 pixeles.
+    - **`deactivated` (modo manual):** Implica que el jugador se controla con el mouse.
 
+¿__? -> "Números debajo del playerAuto" no me parece una referencia precisa, porque cuando la informacion esta desactivada esa referencia es inexistente
 - **Marcador**: Números debajo del playerAuto, los cuales indican el puntaje de cada uno de los jugadores. Cada vez que un jugador se le pasa una pelota, se le suma un punto al otro jugador.
 
-- **Speed**: Se refiere a cuanto tarda la pelota en segundos de ir de lado a lado de la pantalla.
+- **Speed**: Se refiere a cuanto tarda la pelota en segundos de ir de lado a lado de la pantalla (recorrer el ancho de la pantalla o `windowWidth`).
 
-- **barHeight**: Es el número que determina el tamaño de la barra en relación con la ventana del juego. `(player1.height / windowHeight)` calcula la proporción de la altura de la barra del jugador 1 en relación con la altura de la ventana del juego. Por ejemplo, si `barHeight: 0.16`, implica que la barra tiene una altura del 16% de la altura de la ventana.
+- **barHeight**: Es el número que determina el tamaño de la barra en relación con la ventana del juego. `(player#.height / windowHeight)` calcula la proporción de la altura de la barra del jugador en relación con la altura de la ventana del juego.<br>**Ejemplo:** La proporcion 0.16 implica que la barra tiene una altura del 16% de la altura de la ventana.
 
-    La altura de las barras de los jugadores puede variar durante el juego en función de varios factores, como la anotación de puntos, el tipo de jugador (automático o no) y otros ajustes realizados en el código.
+>La altura de las barras, la velocidad de la pelota y los rangos de precision automaticos, pueden variar durante el transcurso de la partida en función de varios factores como lo son, la anotación de puntos, el tipo de jugador (automático o no) y las funciones adaptativas de dificultad implementadas (entre mejor se juegue mas dificil el juego sera y viceversa).
 
 
+¿__? -> ¿Que es lo de abajo? ¿Usaste chatgpt y lo copiaste sin darte cuenta? Ten cuidado con estos pequeños detallitos, llevas un muy buen trabajo.
 Aquí está el texto organizado de manera clara y ordenada para incluir en un README de GitHub:
 
 ## ¿Cómo se logró la implementación?
