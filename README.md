@@ -48,13 +48,13 @@ Al iniciar el juego apareceras en el menú de pausa y tendrás las siguientes op
 >La altura de las barras, la velocidad de la pelota y los rangos de precision automaticos, pueden variar durante el transcurso de la partida en función de varios factores como lo son, la anotación de puntos, el tipo de jugador (automático o no) y las funciones adaptativas de dificultad implementadas (entre mejor se juegue mas dificil el juego sera y viceversa).
 
 
-¿__? -> ¿Que es lo de abajo? ¿Usaste chatgpt y lo copiaste sin darte cuenta? Ten cuidado con estos pequeños detallitos, llevas un muy buen trabajo.
+¿__? -> ¿Que es lo de abajo? ¿Usaste chatgpt y lo copiaste sin darte cuenta? Ten cuidado con estos pequeños detallitos, llevas un muy buen trabajo.<br>
 Aquí está el texto organizado de manera clara y ordenada para incluir en un README de GitHub:
 
-## ¿Cómo se logró la implementación?
+## Detalles de la implementación
 
-### ¿Cuál es el TargetFrameRate?
-
+### Nuestro TargetFrameRate
+¿__? -> ¡PERFECTO!<br>
 Se ha establecido explícitamente el objetivo de FPS en 60 cuadros por segundo usando la función `frameRate(60)` en la función `setup()`. Esto significa que la animación debería apuntar a ejecutarse a una velocidad de 60 FPS.
 
 ### ¿Cómo se logra que la aplicación sea responsiva?
@@ -65,30 +65,36 @@ Se ha establecido explícitamente el objetivo de FPS en 60 cuadros por segundo u
 
 3. **Manejo de orientación de pantalla:** El código verifica la orientación de la pantalla con la condición `if (windowHeight < windowWidth)`. Si la altura de la ventana es menor que su anchura, se asume que la pantalla está en modo horizontal (landscape) y se ejecuta el juego. Si la altura es mayor que la anchura, se muestra un mensaje indicando al usuario que use el juego en modo horizontal.
 
+¿__? -> Esto parece puro comentario de chatgpt :v ... mejor quitarlo c: Posdata: No se uso windowResized() porque al recargar la pagina se reconfigura al nuevo tamaño. <br>
 4. **Actualización de la interfaz de usuario:** La función `windowResized()` no está explícitamente definida en este código, pero sería útil para manejar eventos de redimensionamiento de la ventana del navegador. Dentro de esta función, podrías ajustar el tamaño y la posición de los elementos del juego según sea necesario para mantener una apariencia adecuada cuando cambia el tamaño de la ventana.
 
 ### ¿Qué clases se usaron y se crearon en el juego?
 
-1. **Ball (`class Ball`):** Esta clase define el comportamiento y las propiedades de la pelota en el juego. Contiene métodos para inicializar la posición y la velocidad de la pelota, así como para actualizar su posición en cada fotograma (`update`). También incluye un método para mostrar la pelota en el lienzo del juego (`show`). Además, tiene un método `applyScore` para manejar el puntaje y ajustar la velocidad y otras propiedades del juego cuando se marca un gol.
+1. **Ball (`class Ball`):** Esta clase define el comportamiento y las propiedades de la pelota en el juego. Contiene métodos para inicializar la posición y la velocidad de la pelota, así como para actualizar su posición en cada fotograma (`update`). También incluye un método para mostrar la pelota en el lienzo del juego (`show`). Además, tiene un método `applyScore` para manejar el puntaje y ajustar la velocidad y otras propiedades del juego cuando se marca un punto.
 
-2. **Player (`class Player`):** Esta clase define el comportamiento y las propiedades de los jugadores en el juego, es decir, las paletas que los usuarios pueden controlar o que pueden ser controladas automáticamente (`auto`). Contiene métodos para inicializar la posición, la altura y la precisión del jugador, así como para actualizar su posición en cada fotograma (`update`). También incluye un método `show` para mostrar al jugador en el lienzo del juego. La precisión (`accuracy`) y la altura (`height`) del jugador pueden ajustarse dinámicamente durante el juego.
+2. **Player (`class Player`):** Esta clase define el comportamiento y las propiedades de los jugadores en el juego, es decir, las barras que los usuarios pueden controlar o que pueden ser controladas automáticamente (`auto = true`). Contiene métodos para inicializar la posición, la altura y la precisión del jugador, así como para actualizar su posición en cada fotograma (`update`). También incluye un método `show` para mostrar al jugador en el lienzo del juego. La precisión (`accuracy`) y la altura (`height`) del jugador pueden ajustarse dinámicamente durante el juego.
 
+¿__? -> showMessage no es una clase. ¿Que hace que este aqui? <br>
 3. **showMessage (`function showMessage`):** Esta función se utiliza para mostrar mensajes en la interfaz de usuario del juego. Recibe como parámetros el mensaje a mostrar, así como la posición y el tamaño del texto.
-
-### ¿En qué momento se hace el ajuste de la dificultad?
-
-El ajuste de la dificultad se realiza en el método `applyScore()` de la clase Ball. Este método se llama cuando un jugador anota un gol. Dependiendo de si el jugador contrario es controlado automáticamente o por un jugador humano, se ajustan diversos parámetros de juego para aumentar o disminuir la dificultad.
-
-Este método ajusta la velocidad de la pelota (`ball.setSpeed`), la precisión del jugador automático (`playerA.accuracy`), y la altura de las paletas de los jugadores (`playerA.height` y `playerB.height`). Dependiendo de si el jugador contrario es controlado automáticamente o por un jugador humano, los parámetros se ajustan para aumentar o disminuir la dificultad del juego.
 
 ### ¿Cómo se logra que el modo automático capture la pelota?
 
 ```javascript
 this.y += (ball.y - this.y) * random(this.accuracy/10, this.accuracy);
 ```
-
+¿__? -> Este texto de mas abajo podria ser mas claro, te recomiendo tomar como referencia lo que esta arriba escrito en player#Auto donde se explica el modo automatico y complementarlo para explicarlo con profundidad. <br>
 En esta línea, se calcula la distancia vertical entre la posición actual de la paleta y la posición vertical de la pelota (`ball.y - this.y`), luego se multiplica esta distancia por un valor aleatorio dentro del rango de precisión del jugador (`random(this.accuracy/10, this.accuracy)`). Este valor aleatorio determina qué tan rápido la paleta se moverá hacia la posición vertical de la pelota. Cuanto mayor sea la precisión (`this.accuracy`), más cerca estará la paleta de la posición vertical de la pelota, lo que hace que sea más probable que capture la pelota.
 
+¿__? -> #TODO: Falta explicar los valores minimos y maximos que puede tener height, accuracy y speed como se relacion entre ellos. Pista: Una parte esta en applyScore() y otra en setup()
+
+### ¿En qué momento se hace el ajuste de la dificultad?
+
+El ajuste de la dificultad se realiza en el método `applyScore()` de la clase Ball. Este método se llama cuando un jugador anota un punto. Dependiendo de si el jugador contrario es controlado automáticamente o por un jugador humano, se ajustan diversos parámetros de juego para aumentar o disminuir la dificultad.
+
+¿__? -> Esto de abajo no es claro y tampoco del todo cierto, considero que se relaciona con el #TODO de arriba y tiene que ser modificado para explicar esa relacion que existe entre los ajustes que hace el juego en la dificultad.
+Este método ajusta la velocidad de la pelota (`ball.setSpeed`), la precisión del jugador automático (`playerA.accuracy`), y la altura de las paletas de los jugadores (`playerA.height` y `playerB.height`). Dependiendo de si el jugador contrario es controlado automáticamente o por un jugador humano, los parámetros se ajustan para aumentar o disminuir la dificultad del juego.
+
+¿__? -> En general un excelente trabajo, gracias por tus contribuciones y por tu tiempo, ya casi lo terminamos y si estas usando herramientas externas se cuidadoso en lo que copias y en lo que pegas c: 
 
 ## Contribuciones
 ¡Las contribuciones son bienvenidas! Si tienes ideas para mejorar el juego o encuentras algún error en nuestro codigo, no dudes en ponerte en contacto y compartirnos tu retroalimentacion.
