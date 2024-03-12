@@ -83,11 +83,16 @@ En esta línea, se calcula la distancia vertical entre la posición actual de la
 
 ### ¿En qué momento se hace el ajuste de la dificultad?
 
-El ajuste de la dificultad se realiza en el método `applyScore()` de la clase Ball. Este método se llama cuando un jugador anota un punto. Dependiendo de si el jugador contrario es controlado automáticamente o por un jugador humano, se ajustan diversos parámetros de juego para aumentar o disminuir la dificultad.
 
-¿__? -> Esto de abajo no es claro y tampoco del todo cierto, considero que se relaciona con el #TODO de arriba y tiene que ser modificado para explicar esa relacion que existe entre los ajustes que hace el juego en la dificultad.
-Este método ajusta la velocidad de la pelota (`ball.setSpeed`), la precisión del jugador automático (`playerA.accuracy`), y la altura de las paletas de los jugadores (`playerA.height` y `playerB.height`). Dependiendo de si el jugador contrario es controlado automáticamente o por un jugador humano, los parámetros se ajustan para aumentar o disminuir la dificultad del juego.
+El ajuste de la dificultad se realiza en el método `applyScore()` de la clase Ball. Este método se llama cuando un jugador anota un punto, es responsable de actualizar varios aspectos del juego para ajustar la dificultad. 
+Dependiendo de si el jugador contrario es controlado automáticamente o por un jugador humano, se ajustan diversos parámetros de juego para aumentar o disminuir la dificultad.
 
+
+- **Altura de las Barras (height):** Se ajusta dinámicamente en respuesta al rendimiento de los jugadores, manteniendo un equilibrio relativo entre ambos.
+
+- **Precisión de los Jugadores Automáticos (accuracy):** Se ajusta en función del rendimiento de los jugadores automáticos, haciéndolos más o menos efectivos en la interceptación de la pelota.
+
+- **Velocidad de la Pelota (speed):** Se ajusta en respuesta al rendimiento de los jugadores, afectando la rapidez con la que se mueve la pelota por la pantalla.
 
 ## Contribuciones
 ¡Las contribuciones son bienvenidas! Si tienes ideas para mejorar el juego o encuentras algún error en nuestro codigo, no dudes en ponerte en contacto y compartirnos tu retroalimentacion.
