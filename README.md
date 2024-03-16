@@ -54,6 +54,7 @@ Se ha establecido explícitamente el objetivo de FPS en 60 cuadros por segundo u
 
 ### ¿Cómo se logra que la aplicación sea responsiva?
 
+Se logra al crear el Lienzo(**Canvas**) con los parámetros de ancho de ventana, alto de ventana(**windowWidth, windowHeight**) para que el tamaño se adapte al tamaño de la ventana del jugador.
 
 ### ¿Qué clases se usaron y se crearon en el juego?
 
@@ -64,16 +65,11 @@ Se ha establecido explícitamente el objetivo de FPS en 60 cuadros por segundo u
 
 ### ¿Cómo se logra que el modo automático capture la pelota?
 
-```javascript
-this.y += (ball.y - this.y) * random(this.accuracy/10, this.accuracy);
-```
-¿__? -> Este texto de mas abajo podria ser mas claro, te recomiendo tomar como referencia lo que esta arriba escrito en player#Auto donde se explica el modo automatico y complementarlo para explicarlo con profundidad. <br>
-En esta línea, se calcula la distancia vertical entre la posición actual de la barra y la posición vertical de la pelota (`ball.y - this.y`), luego se multiplica esta distancia por un valor aleatorio dentro del rango de precisión del jugador (`random(this.accuracy/10, this.accuracy)`). Este valor aleatorio determina qué tan rápido la barra se moverá hacia la posición vertical de la pelota. Cuanto mayor sea la precisión (`this.accuracy`), más cerca estará la barra de la posición vertical de la pelota, lo que hace que sea más probable que capture la pelota.
-
-
-- **`height`**: La altura de las barras de los jugadores se inicializa con un valor relativo basado en el tamaño de la ventana (`windowHeight`). En la función `applyScore()`, se ajusta dinámicamente la altura de las paletas, lo que podría modificar los límites mínimo y máximo de la altura durante el juego.
+En el método **update()**, el jugador calcula su nueva posición basándose en la posición y dirección actual de la pelota. Verifica si la dirección de la pelota coincide con la dirección del jugador y ajusta la posición vertical del jugador en consecuencia, y del parámetro que depende principalmente es del **accuracy**, que se explica a continuación con otros parámetros menos relevantes pero que igual afectan:
 
 - **`accuracy`**: En la función `applyScore()`, se ajusta la precisión de los jugadores automáticos. Se define un rango mínimo y máximo para la precisión (`minAccuracy` y `maxAcurracy`), y se modifica dinámicamente durante el juego.
+
+- **`height`**: La altura de las barras de los jugadores se inicializa con un valor relativo basado en el tamaño de la ventana (`windowHeight`). En la función `applyScore()`, se ajusta dinámicamente la altura de las paletas, lo que podría modificar los límites mínimo y máximo de la altura durante el juego.
 
 - **`speed`**: Se inicializa la velocidad de la pelota (`ballSpeed`) con un valor constante de 3 segundos. En la función `applyScore()`, se ajusta la velocidad de la pelota.
 
