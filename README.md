@@ -20,14 +20,13 @@ Al iniciar el juego apareceras en el menú de pausa y tendrás las siguientes op
 
 - **Teclas:**
   - **ENTER:** Pausar/Reanudar el juego.
-  - **i:** Activa/Desactiva la informacion del juego (`player1Auto`, `player2Auto`, `Speed`, `barHeight`)
+  - **i :** Activa/Desactiva la informacion del juego (`player1Auto`, `player2Auto`, `Speed`, `barHeight`)
   - **1 (Barra Izquierda):** Activa/Desactiva el modo automático, cuando no está en automático pasa a manual, lo cual implica moverlo con el mouse
   - **2 (Barra derecha):** Activa/Desactiva el modo automático, cuando no está en automático pasa a manual, lo cual implica moverlo con el mouse
-  - **a:** Activa/Desactiva el audio del juego.
+  - **a :** Activa/Desactiva el audio del juego.
 
 
- **Nota:** La aplicacion esta creada para funcionar en formato paisaje(landscape) de manera responsiva y requiere de un teclado (o un ingreso de caracteres), para que el juego pueda ser configurado y funcione de manera correcta.
-
+ > **Nota:** La aplicacion esta creada para funcionar en formato paisaje (landscape) de manera responsiva y requiere de un teclado (o un ingreso de caracteres), para que el juego pueda ser configurado y funcione de manera correcta.
 
 ## Interfaz
 
@@ -43,8 +42,7 @@ Al iniciar el juego apareceras en el menú de pausa y tendrás las siguientes op
 
 - **barHeight**: Es el número que determina el tamaño de la barra en relación con la ventana del juego. `(player#.height / windowHeight)` calcula la proporción de la altura de la barra del jugador en relación con la altura de la ventana del juego. <br>**Ejemplo:** La proporcion 0.16 implica que la barra tiene una altura del 16% de la altura de la ventana.
 
-**Nota:** La altura de las barras, la velocidad de la pelota y los rangos de precision automaticos, pueden variar durante el transcurso de la partida en función de varios factores como lo son, la anotación de puntos, el tipo de jugador (automático o no) y las funciones adaptativas de dificultad implementadas (entre mejor se juegue mas dificil el juego sera y viceversa).
-
+> La altura de las barras, la velocidad de la pelota y los rangos de precision automaticos, pueden variar durante el transcurso de la partida en función de varios factores como lo son, la anotación de puntos, el tipo de jugador (automático o no) y las funciones adaptativas de dificultad implementadas (entre mejor se juegue mas dificil el juego sera y viceversa).
 
 ## Detalles de la implementación
 
@@ -54,7 +52,11 @@ Se ha establecido explícitamente el objetivo de FPS en 60 cuadros por segundo u
 
 ### ¿Cómo se logra que la aplicación sea responsiva?
 
-Se logra al crear el Lienzo(**Canvas**) con los parámetros de ancho de ventana, alto de ventana(**windowWidth, windowHeight**) para que el tamaño se adapte al tamaño de la ventana del jugador.
+1. **Tamaño del lienzo dinámico:** Al crear el lienzo con `createCanvas(windowWidth, windowHeight)`, el lienzo se ajusta automáticamente al tamaño de la ventana del navegador. Esto garantiza que el juego se adapte a diferentes tamaños de pantalla.
+
+2. **Dimensiones y posiciones relativas:** Las dimensiones y posiciones de los elementos del juego se definen en función del tamaño de la ventana, utilizando valores como `windowWidth`, `windowHeight` y proporciones de estos valores. Por ejemplo, el tamaño de la pelota (`ballSize`) se define como un porcentaje (`windowHeight * 0.02`) del alto de la ventana, y las posiciones de los jugadores (`player1` y `player2`) también se definen en función del tamaño de la ventana.
+
+3. **Manejo de orientación de pantalla:** El código verifica la orientación de la pantalla con la condición `if (windowHeight < windowWidth)`. Si la altura de la ventana es menor que su anchura, se asume que la pantalla está en modo horizontal (landscape) y se ejecuta el juego. Si la altura es mayor que la anchura, se muestra un mensaje indicando al usuario que use el juego en modo horizontal.
 
 ### ¿Qué clases se usaron y se crearon en el juego?
 
@@ -62,33 +64,26 @@ Se logra al crear el Lienzo(**Canvas**) con los parámetros de ancho de ventana,
 
 2. **Player (`class Player`):** Esta clase define el comportamiento y las propiedades de los jugadores en el juego, es decir, las barras que los usuarios pueden controlar o que pueden ser controladas automáticamente (`auto = true`). Contiene métodos para inicializar la posición, la altura y la precisión del jugador, así como para actualizar su posición en cada fotograma (`update`). También incluye un método `show` para mostrar al jugador en el lienzo del juego. La precisión (`accuracy`) y la altura (`height`) del jugador pueden ajustarse dinámicamente durante el juego.
 
-
 ### ¿Cómo se logra que el modo automático capture la pelota?
 
-En el método **update()**, el jugador calcula su nueva posición basándose en la posición y dirección actual de la pelota. Verifica si la dirección de la pelota coincide con la dirección del jugador y ajusta la posición vertical del jugador en consecuencia, y del parámetro que depende principalmente es del **accuracy**, que se explica a continuación con otros parámetros menos relevantes pero que igual afectan:
-
-- **`accuracy`**: En la función `applyScore()`, se ajusta la precisión de los jugadores automáticos. Se define un rango mínimo y máximo para la precisión (`minAccuracy` y `maxAcurracy`), y se modifica dinámicamente durante el juego.
-
-- **`height`**: La altura de las barras de los jugadores se inicializa con un valor relativo basado en el tamaño de la ventana (`windowHeight`). En la función `applyScore()`, se ajusta dinámicamente la altura de las paletas, lo que podría modificar los límites mínimo y máximo de la altura durante el juego.
-
-- **`speed`**: Se inicializa la velocidad de la pelota (`ballSpeed`) con un valor constante de 3 segundos. En la función `applyScore()`, se ajusta la velocidad de la pelota.
-
-
-**Nota:** Se modifican los valores de `height`, `accuracy` y `speed` dependiendo de las condiciones del juego. Por ejemplo, cuando un jugador anota un gol, se ajusta la velocidad de la pelota (`speed`), la precisión del jugador automático (`accuracy`) y la altura de las barras de los jugadores (`height`). Estos ajustes pueden incrementar o decrementar los valores de estos parámetros, afectando así su rango mínimo y máximo.
-
+En el método **Player.update()** el jugador automático calcula su nueva posición basándose en la `coordenada y` de la pelota como dirección de la misma, lo que hace durante un fotograma es verificar si la trayectoria actual va a impactar su lado de la pantalla, en caso de que sí, ajustará su posición de acuerdo a `accuracy` como se explicara a continuación y de lo contrario se quedara quieto.<br><br>
+Esta es la linea de codigo responsable de hacer el ajuste mencionado:
+```javascript
+this.y += (ball.y - this.y) * random(this.accuracy/10, this.accuracy);
+```
+La idea consiste en calcular la distancia a la que se encuentra la pelota (`ball.y`) con respecto al centro de la barra (`this.y`), esto se hace por medio de `(ball.y - this.y)` que puede dar como resultado un valor tanto positivo como negativo, es por eso que se usa `+=` en la formula. Una vez que se sabe cual es la distancia que tendria que moverse en `y` la barra para quedar perfectamente alineada con la pelota, lo que se hace es generar un numero aleatorio que vaya en rango definido de acuerdo a `this.accuracy`, y que es de la forma `0.0# - #.##` donde `0.0#` es una decima parte de this.accuracy y corresponde al **limite inferior;** de manera viceversa this.accuracy hace las veces de **limite superior.**
 
 ### ¿En qué momento se hace el ajuste de la dificultad?
 
+El ajuste de la dificultad se realiza en el método `Ball.applyScore()`. Este método se llama cuando un jugador anota un punto y es responsable de actualizar varios aspectos del juego que son responsables de la dificultad. Los ajustes de dificultad son los siguientes:
 
-El ajuste de la dificultad se realiza en el método `applyScore()` de la clase Ball. Este método se llama cuando un jugador anota un punto, es responsable de actualizar varios aspectos del juego para ajustar la dificultad. 
-Dependiendo de si el jugador contrario es controlado automáticamente o por un jugador humano, se ajustan diversos parámetros de juego para aumentar o disminuir la dificultad.
+- **Precisión de los Jugadores Automáticos (`accuracy`):** En la función `Ball.applyScore()`, se ajusta la precisión de los jugadores automáticos de acuerdo al rendimiento del otro jugador y si es automatico o no. Se define un rango mínimo y máximo para la precisión (`minAccuracy` y `maxAcurracy`), y se modifica dinámicamente durante el juego, haciéndolos más o menos efectivos en la interceptación de la pelota.
 
+- **Velocidad de la Pelota (`speed`):** Se inicializa la velocidad de la pelota (`ballSpeed`) con un valor de 3 segundos, estos segundos hacen referencia al tiempo que tarda la pelota de ir de lado a lado de la pantalla y se ajustan de acuerdo al rendimiento de los jugadores, afectando la rapidez percibida con la que se mueve la pelota por la pantalla.
 
-- **Altura de las Barras (height):** Se ajusta dinámicamente en respuesta al rendimiento de los jugadores, manteniendo un equilibrio relativo entre ambos.
+- **Altura de las Barras (`height`):** La altura de las barras de los jugadores se inicializa con un valor relativo basado en la altura de la ventana (`windowHeight`). En la función `Ball.applyScore()`, se ajusta dinámicamente en respuesta al rendimiento de los jugadores, manteniendo un equilibrio relativo entre ambos.
 
-- **Precisión de los Jugadores Automáticos (accuracy):** Se ajusta en función del rendimiento de los jugadores automáticos, haciéndolos más o menos efectivos en la interceptación de la pelota.
-
-- **Velocidad de la Pelota (speed):** Se ajusta en respuesta al rendimiento de los jugadores, afectando la rapidez con la que se mueve la pelota por la pantalla.
+> Dependiendo de si el jugador contrario es controlado automáticamente o por un jugador humano, se ajustan diversos parámetros de juego para aumentar o disminuir la dificultad.
 
 ## Contribuciones
 ¡Las contribuciones son bienvenidas! Si tienes ideas para mejorar el juego o encuentras algún error en nuestro codigo, no dudes en ponerte en contacto y compartirnos tu retroalimentacion.
