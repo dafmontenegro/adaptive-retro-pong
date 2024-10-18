@@ -10,7 +10,7 @@ El proyecto consiste en una nueva versión del clásico juego PONG lanzado por A
 
  [**Demo p5.js:**](https://editor.p5js.org/dafmontenegro/full/Cnx7DpEdd) Juega y edita el codigo en tiempo real desde un proyecto en p5.js
 
- [**Demo:**](https://dafmontenegro.com/adaptive-retro-pong/) Juega pantalla completa sin interrupciones
+ [**Demo:**](https://montenegrodanielfelipe.com/adaptive-retro-pong/) Juega pantalla completa sin interrupciones
 
 ## Controles
 Al iniciar el juego apareceras en el menú de pausa y tendrás las siguientes opciones para configurar tu partida:
